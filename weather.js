@@ -7,7 +7,7 @@ const getWeather = () => {
     let search = document.querySelector("#search")
     title.innerHTML = "";
     weather.innerHTML = `<p>Loading...</p>`;
-    let city = search.value 
+    let city = search.value;
     if (city) {
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
         fetch(url)
@@ -29,7 +29,20 @@ const getWeather = () => {
             const data = JSON.parse(cityData);
             showWeather(data);
         } else {
-            weather.innerHTML = `<p>Enter a city name to search for weather data</p>`;
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=Aylesbury%20Vale&appid=${apiKey}&units=metric`;
+            fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.cod == "404") {
+                    weather.innerHTML = `
+                        <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> City not found </h2>
+                    `;
+                } else {
+                    localStorage.setItem("city", JSON.stringify(data));
+                    showWeather(data);
+                }
+            })
+            .catch((error) => console.error(error));
         }
     }
 };
