@@ -46,6 +46,14 @@ input{
     box-shadow: 5px 13px 5px #0000005b;
     margin-bottom: 10px;
 }
+button{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    top: 5px;
+    left: 20px;
+}
 .content{
     display: flex;
     flex-direction: column;

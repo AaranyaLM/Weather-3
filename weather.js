@@ -1,31 +1,39 @@
 const apiKey="9b6d0aa88d6f133dc229ec48ec83c0fe"
-const form= document.querySelector("form")
+const button= document.querySelector("#button")
 const weather= document.querySelector("#weather")
-let search= document.querySelector("#search")
 const title= document.querySelector("#title")
-search.value= "Aylesbury Vale"
 
-
-const getWeather = (city) => {
+const getWeather = () => {
+    let search = document.querySelector("#search")
     title.innerHTML = "";
     weather.innerHTML = `<p>Loading...</p>`;
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        const database = JSON.stringify(data);
-        localStorage.setItem("database", database);
-        showWeather(data);
-      })
-      .catch((error) => {
-        const database = localStorage.getItem("database");
-        if (database) {
-          showWeather(JSON.parse(database));
+    let city = search.value 
+    if (city) {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.cod == "404") {
+                    weather.innerHTML = `
+                        <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> City not found </h2>
+                    `;
+                } else {
+                    localStorage.setItem("city", JSON.stringify(data));
+                    showWeather(data);
+                }
+            })
+            .catch((error) => console.error(error));
+    } else {
+        const cityData = localStorage.getItem("city");
+        if (cityData) {
+            const data = JSON.parse(cityData);
+            showWeather(data);
         } else {
-          weather.innerHTML = `<h2>Something went wrong. Please try again later.</h2>`;
+            weather.innerHTML = `<p>Enter a city name to search for weather data</p>`;
         }
-      });
-}
+    }
+};
+
 
 const showWeather=(data)=>{
     console.log(data)
@@ -103,10 +111,13 @@ const showWeather=(data)=>{
     `
 }
 window.onload= function(){
-    getWeather(search.value)
+    getWeather()
 }
 
-form.addEventListener("submit",function(event){
-    getWeather(search.value)
-    event.preventDefault()
+window.addEventListener("keydown",function(e){
+    switch(e.keyCode){
+        case 13:
+            getWeather();
+            break;
+    }
 })
