@@ -26,6 +26,7 @@ const getWeather = () => {
     } else {
         const cityData = localStorage.getItem("city");
         if (cityData) {
+            console.log("Accessed from localStorage")
             const data = JSON.parse(cityData);
             showWeather(data);
         } else {
@@ -33,14 +34,9 @@ const getWeather = () => {
             fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                if (data.cod == "404") {
-                    weather.innerHTML = `
-                        <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> City not found </h2>
-                    `;
-                } else {
                     localStorage.setItem("city", JSON.stringify(data));
                     showWeather(data);
-                }
+                
             })
             .catch((error) => console.error(error));
         }
