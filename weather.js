@@ -3,12 +3,22 @@ const button= document.querySelector("#button")
 const weather= document.querySelector("#weather")
 const title= document.querySelector("#title")
 
-const getWeather = () => {
+const getConnectionStatus=(status)=>{
+    if(status){
+        console.log("Online")
+        getWeatherOn()
+    }else{
+        console.log("Offline")
+        getWeatherOff()
+    }
+}
+
+const getWeatherOn=()=>{
     let search = document.querySelector("#search")
     title.innerHTML = "";
     weather.innerHTML = `<p>Loading...</p>`;
     let city = search.value;
-    if (!city) {
+    if(!city){
         const cityData = localStorage.getItem("city");
         if (cityData) { //will display if there is a local storage data available
             console.log("Accessed from localStorage")
@@ -20,28 +30,43 @@ const getWeather = () => {
             .then((response) => response.json())
             .then((data) => {
                     localStorage.setItem("city", JSON.stringify(data));
-                    getWeather()
+                    getWeatherOn()
                 
             })
             .catch((error) => console.error(error));
         }
-    } else {
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.cod == "404") {
+    }else{
+        const cityData= localStorage.getItem("city")
+        if(cityData){
+            const data = JSON.parse(cityData);
+            if(data.name.toLowerCase()==city.toLowerCase()){
+                console.log("Accessed from localStorage")
+                showWeather(data)
+            }else{
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+            fetch(url)
+            .then((response)=>response.json())
+            .then((onData)=>{
+                if (onData.cod == "404") {
                     weather.innerHTML = `
                         <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> City not found </h2>
                     `;
-                } else { //will run if there is a city value available
-                    localStorage.setItem("city", JSON.stringify(data));
-                    showWeather(data);
+                }else{
+                    console.log("Accessed from the internet")
+                    localStorage.setItem("city", JSON.stringify(onData));
+                    showWeather(onData);
                 }
             })
             .catch((error) => console.error(error));
+        }
     }
-};
+       
+    }
+}
+
+const getWeatherOff=()=>{
+
+}
 
 
 const showWeather=(data)=>{
@@ -112,13 +137,13 @@ const showWeather=(data)=>{
     `
 }
 window.onload= function(){
-    getWeather()
+    getConnectionStatus(navigator.onLine)
 }
 
 window.addEventListener("keydown",function(e){
     switch(e.keyCode){
         case 13:
-            getWeather();
+            getConnectionStatus(navigator.onLine)
             break;
     }
 })
