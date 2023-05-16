@@ -102,30 +102,20 @@ const getWeatherOn = () => {
 ``
 
 
-  //else {
-      //   console.log("Data accessed from the internet");
-      //   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-      //   fetch(url)
-      //     .then((response) => response.json())
-      //     .then((onData) => {
-      //       if (onData.cod == "404") {
-      //         weather.innerHTML = `
-      //         <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> City not found </h2>
-      //         `;
-      //       } else {
-      //         localStorage.setItem("city", JSON.stringify(onData));
-      //         showWeather(onData);
-      //       }
-      //     })
-      //     .catch((error) => console.error(error));
-      // }
-
   const getWeatherOff = () => {
+    let city = search.value;
     const cityData = localStorage.getItem("city");
-    if (cityData) {
-      console.log("Data accessed from local storage");
-      const data = JSON.parse(cityData);
-      showWeather(data);
+    if(city){
+      localStorage.setItem("LastSearch",city)
+      if (cityData) {
+        weatherData = JSON.parse(cityData); 
+        const matchingData = weatherData.find(
+          (data) => data.name.toLowerCase() === city.toLowerCase()
+        );
+        if (matchingData) {
+          console.log("Data accessed from local storage");
+          showWeather(matchingData);
+        }
     } else {
       console.log("Failed to fetch data: no internet connection");
       weather.innerHTML = `
@@ -133,6 +123,27 @@ const getWeatherOn = () => {
           Failed to fetch data. Please check your internet connection and try again.
         </h2>`;
     }
+  }else{
+      weatherData = JSON.parse(cityData); // Retrieve the weather data array from local storage
+      // Retrieve the last searched city name from local storage
+      const lastSearchedCity = localStorage.getItem("LastSearch");
+
+      // Find the matching data in the weatherData array
+      const matchingData = weatherData.find(
+        (data) => data.name.toLowerCase() === lastSearchedCity.toLowerCase()
+      );
+
+      if (matchingData) {
+        console.log("Data accessed from local storage");
+        showWeather(matchingData);
+      }else{
+        console.log("Failed to fetch data: no internet connection");
+      weather.innerHTML = `
+        <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+          Failed to fetch data. Please check your internet connection and try again.
+        </h2>`;
+      }
+  }
   };
 
 
