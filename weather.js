@@ -24,10 +24,20 @@ const getWeatherOn = () => {
   if (!city) {
     const cityData = localStorage.getItem("city");
     if (cityData) {
-      console.log("Data accessed from local storage");
       weatherData = JSON.parse(cityData); // Retrieve the weather data array from local storage
-      const data = weatherData[weatherData.length - 1]; // Get the latest data from the array
-      showWeather(data);
+      // Retrieve the last searched city name from local storage
+      const lastSearchedCity = localStorage.getItem("LastSearch");
+
+      // Find the matching data in the weatherData array
+      const matchingData = weatherData.find(
+        (data) => data.name.toLowerCase() === lastSearchedCity.toLowerCase()
+      );
+
+      if (matchingData) {
+        console.log("Data accessed from local storage");
+        showWeather(matchingData);
+      } 
+
     } else {
       console.log("Data accessed from the internet");
       const url = `https://api.openweathermap.org/data/2.5/weather?q=Aylesbury%20Vale&appid=${apiKey}&units=metric`;
@@ -41,10 +51,11 @@ const getWeatherOn = () => {
         .catch((error) => console.error(error));
     }
   } else {
+    localStorage.setItem("LastSearch",city)
     const cityData = localStorage.getItem("city");
     if (cityData) {
       weatherData = JSON.parse(cityData); // Retrieve the weather data array from local storage
-      const matchingData = weatherData.find(
+      const matchingData = weatherData.reverse().find(
         (data) => data.name.toLowerCase() === city.toLowerCase()
       );
       if (matchingData) {
@@ -58,7 +69,7 @@ const getWeatherOn = () => {
           .then((onData) => {
             if (onData.cod == "404") {
               weather.innerHTML = `
-                <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> City not found </h2>
+              <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> City not found </h2>
               `;
             } else {
               weatherData.push(onData); // Append data to the weatherData array
@@ -68,9 +79,28 @@ const getWeatherOn = () => {
           })
           .catch((error) => console.error(error));
       }
+    } else {
+      console.log("Data accessed from the internet");
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((onData) => {
+          if (onData.cod == "404") {
+            weather.innerHTML = `
+            <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> City not found </h2>
+            `;
+          } else {
+            weatherData.push(onData); // Append data to the weatherData array
+            localStorage.setItem("city", JSON.stringify(weatherData)); // Store the updated weatherData array in local storage
+            showWeather(onData);
+          }
+        })
+        .catch((error) => console.error(error));
     }
   }
 };
+``
+
 
   //else {
       //   console.log("Data accessed from the internet");
