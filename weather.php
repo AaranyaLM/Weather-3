@@ -9,7 +9,7 @@ function entry($mysql, $city){
     $start = strtotime("-7 days"); // Start date 7 days ago
     $end = time(); // Current timestamp
 
-    $url = "https://history.openweathermap.org/data/2.5/history/city?q=$city,$countrycode&type=hour&start=$start&end=$end&appid=1bb0ad32be0d73c2ed42f310d07ee508";
+    $url = "https://api.weatherbit.io/v2.0/history/daily?city=" . urlencode($city) . "&start_date=".$start."&end_date=".$end."&key=2c573df600fd49a7a2418ffc76978e17";
 
     $data = file_get_contents($url);
     $data = json_decode($data, true);
