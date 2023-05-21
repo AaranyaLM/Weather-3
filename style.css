@@ -4,10 +4,7 @@
     font-family: 'Mulish', sans-serif;
     font-family: 'Open Sans', sans-serif;
     color: white;
-    background:linear-gradient(
-        rgba(1, 60, 138, 0.95), 
-        rgba(0, 83, 161, 0.95)
-    )
+    
 }
 .container{
     width: 100%;
