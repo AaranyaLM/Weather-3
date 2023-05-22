@@ -107,23 +107,6 @@ p{
     font-size: smaller;
     color: rgba(255, 255, 255, 0.377);
 }
-
-.weather-container{
-    display: flex;
-    flex-direction: column;
-}
-
-.weather-history{
-    display: flex;
-    justify-content: space-evenly;
-    border-top: 3px solid rgba(255, 255, 255, 0.258);
-    padding: 10px 20px 15px;
-    margin: 0px 100px 0px ;
-    border-radius: 80px;
-}
-.weather-history .item-content{
-    color: rgba(255, 255, 255, 0.477);
-}
 .button7{
     text-align: center;
     
@@ -140,4 +123,20 @@ p{
     color:  rgba(1, 60, 138, 0.95);
       background-color: white;
     
+}
+.weather-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.weather-history{
+    display: flex;
+    justify-content: space-evenly;
+    border-top: 3px solid rgba(255, 255, 255, 0.258);
+    padding: 10px 20px 15px;
+    margin: 0px 100px 0px ;
+    border-radius: 80px;
+}
+.weather-history .item-content{
+    color: rgba(255, 255, 255, 0.477);
 }
