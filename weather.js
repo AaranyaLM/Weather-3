@@ -120,7 +120,7 @@ const getWeatherOn = () => {
       console.log("Failed to fetch data: no internet connection");
       weather.innerHTML = `
         <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-          Please check your connection and try again.
+          Failed to fetch data. Please check your internet connection and try again.
         </h2>`;
     }
   }else{
@@ -140,8 +140,8 @@ const getWeatherOn = () => {
         console.log("Failed to fetch data: no internet connection");
       weather.innerHTML = `
         <h2 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        Please check your connection and try again.
-+-        </h2>`;
+          Failed to fetch data. Please check your internet connection and try again.
+        </h2>`;
       }
   }
   };

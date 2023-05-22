@@ -8,10 +8,10 @@ function city($city){
 
 
 function conmysql($data,$city){
-    $localhost = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "weather app 3";
+    $localhost = "sql212.epizy.com";
+    $username = "epiz_34167897";
+    $password = "g9OljOD7Ul0ESel";
+    $dbname = "epiz_34167897_practice";
     $mysql = mysqli_connect($localhost, $username, $password, $dbname);
     entry($mysql,$data,$city);
 }
@@ -64,7 +64,7 @@ function retrive($mysql,$data){
 if ( isset($_GET['search']) ) 
 {
     $Searched_City_Name = $_GET['search'];
-    header("Location: index.php?passed_city_name=" . urlencode($Searched_City_Name));
+    header("Location: history.php?passed_city_name=" . urlencode($Searched_City_Name));
     exit();
 }
 

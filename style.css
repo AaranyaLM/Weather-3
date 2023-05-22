@@ -124,4 +124,20 @@ p{
 .weather-history .item-content{
     color: rgba(255, 255, 255, 0.477);
 }
-
+.button7{
+    text-align: center;
+    
+    
+}
+.button7 a{
+    border: 1px solid white;
+    padding: 10px;
+    transition: 0.2s;
+    border-radius: 50px;
+    text-decoration: none;
+}
+.button7 button:hover{
+    color:  rgba(1, 60, 138, 0.95);
+      background-color: white;
+    
+}

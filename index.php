@@ -1,6 +1,4 @@
-<?php
-    include "weather.php"
-?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,16 +16,13 @@
 
         <div class="header">     
             <div class="search-container">
-                <form method="GET" action="weather.php">
-                    <input type="text" id="search" name="search" placeholder="Search your City">
+                
+                <input type="text" id="search" placeholder="Search your City" />
                 <button onclick="getConnectionStatus(navigator.onLine)">
                     <span class="input-group-text border-0" id="search-addon">
                         <i class="fas fa-search"></i>
                     </span>
                 </button>
-                </form>
-                
-                
                 
             </div>
         </div>   
@@ -40,27 +35,9 @@
 
            
         </div>
-
-
-        <!--7 days data here-->
-        <div class="weather-history">
-                <?php
-                for ($i=6; $i>=1; $i--) {
-                    $date = (new DateTime())->sub(new DateInterval('P'.$i.'D'))->format('Y-m-d');
-                ?>
-                <div class="day">
-                    <div class="item-title">
-                        <?php echo $date;?>
-                    </div>
-                    <div class="item-content">
-                        <?php echo $temp2[6 - $i]."°C"; ?>
-                    </div>
-                </div>
-                <?php } ?>
-            </div>
-
-
-
+        <div class="button7">
+            <a href="history.php">Weather History</a>
+        </div>
         <div class="footer">
             &#169; Made by Aaranya Maskey
         </div>
